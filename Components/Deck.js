@@ -4,9 +4,13 @@ import { Button, Card } from 'react-native-elements';
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
-const SWIPE_OUT_DURATION = 250;
+const SWIPE_OUT_DURATION = 500;
 
 class Deck extends Component {
+    static defaultProps = {
+        onSwipeLeft: () => {},
+        onSwipeRight: () => {} 
+    }
 
     constructor(props) {
         super(props);
@@ -19,10 +23,10 @@ class Deck extends Component {
             },
             onPanResponderRelease: (event, gesture) => {
                 if (gesture.dx > SWIPE_THRESHOLD) {
-                    this.forceSwipeRight();
+                    this.forceSwipe('Right');
                 }
                 else if (gesture.dx < -SWIPE_THRESHOLD) {
-
+                    this.forceSwipe('Left');
                 }
                 else {
                     this.resetPosition();
@@ -30,14 +34,22 @@ class Deck extends Component {
             }
         });
 
-        this.state = { panResponder, position };
+        this.state = { panResponder, position , index: 0 };
     }
 
-    forceSwipeRight() {
+    forceSwipe(direction) {
+        const x = direction === 'Right' ? SCREEN_WIDTH*2 : -SCREEN_WIDTH*2; 
         Animated.timing(this.state.position, {
-            toValue: { x: SCREEN_WIDTH*2 , y: 0 },
+            toValue: { x , y: 0 },
             duration: SWIPE_OUT_DURATION
-        }).start();
+        }).start( () => this.onSwipeComplete(direction) );
+    }
+
+    onSwipeComplete(direction) {
+        const { onSwipeLeft , onSwipeRight, data } = this.props;
+        const item = data[this.state.index];
+
+        direction === 'Right' ? onSwipeRight(item) : onSwipeLeft(item);
     }
 
     resetPosition() {
