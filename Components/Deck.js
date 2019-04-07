@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Animated, Text, PanResponder, Dimensions } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 
+import { Actions } from 'react-native-router-flux';
+
 const SCREEN_WIDTH = Dimensions.get("window").width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 500;
@@ -74,6 +76,26 @@ class Deck extends Component {
     }
 
     renderCards() {
+
+        if(this.state.index >= this.props.data.length) {
+            return (
+                <Card
+                    title="No jobs for you"
+                    containerStyle={{ borderRadius: 10 }}
+                >
+                    <Text style={{ marginBottom: 10 }}>
+                        Try in some other area.
+                    </Text>
+                    <Button
+                        backgroundColor="#03A9F4"
+                        title="Search again"
+                        onPress={() => Actions.Map()}
+                    />
+                </Card>
+
+            );
+        }
+
         return this.props.data.map((item, i) => {
 
             if(i < this.state.index) { return null; }
