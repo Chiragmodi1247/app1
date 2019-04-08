@@ -5,6 +5,7 @@ import { Button, Card } from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 
 const SCREEN_WIDTH = Dimensions.get("window").width;
+const SCREEN_HEIGHT = Dimensions.get("screen").height;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
 const SWIPE_OUT_DURATION = 500;
 
@@ -40,8 +41,8 @@ class Deck extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.data !== this.props.data){
-            this.setState({ index:0 });
+        if (nextProps.data !== this.props.data) {
+            this.setState({ index: 0 });
         }
     }
 
@@ -100,7 +101,7 @@ class Deck extends Component {
                     <Button
                         backgroundColor="#03A9F4"
                         title="Search again"
-                        onPress={() => Actions.Map()}
+                        onPress={() => Actions.pop()}
                     />
                 </Card>
 
@@ -114,51 +115,51 @@ class Deck extends Component {
             if (i === this.state.index) {
                 return (
                     <View key={item.id} style={styles.cardStyle}>
-                    <Animated.View
-                        key={item.id}
-                        style={this.getCardStyle()} //unable to apply multiple style
-                        {...this.state.panResponder.panHandlers}
-                    >
-                        <Card
+                        <Animated.View
                             key={item.id}
-                            title={item.text}
-                            image={{ uri: item.uri }}
-                            containerStyle={{ borderRadius: 10 }}
+                            style={this.getCardStyle()} //unable to apply multiple style
+                            {...this.state.panResponder.panHandlers}
                         >
-                            <Text style={{ marginBottom: 10 }}>
-                                I Can Customize card further.
+                            <Card
+                                key={item.id}
+                                title={item.text}
+                                image={{ uri: item.uri }}
+                                containerStyle={{ borderRadius: 10 }}
+                            >
+                                <Text style={{ marginBottom: 10 }}>
+                                    I Can Customize card further.
                             </Text>
-                            <Button
-                                backgroundColor="#03A9F4"
-                                title="View Now!"
-                            />
-                        </Card>
-                    </Animated.View>
-                </View>
+                                <Button
+                                    backgroundColor="#03A9F4"
+                                    title="View Now!"
+                                />
+                            </Card>
+                        </Animated.View>
+                    </View>
                 );
             }
             return (
                 <Animated.View
-                key={item.id}
-                style={[styles.cardStyle, { top: (0.85*SCREEN_WIDTH) + (10 * (i - this.state.index)) }]}
-            >
-                <Card
                     key={item.id}
-                    title={item.text}
-                    image={{ uri: item.uri }}
-                    containerStyle={{ borderRadius: 10 }}
+                    style={[ styles.cardStyle , { top: 300 + (12 * (i - this.state.index)) }]}
                 >
-                    <Text style={{ marginBottom: 10 }}>
-                        I Can Customize card further.
+                    <Card
+                        key={item.id}
+                        title={item.text}
+                        image={{ uri: item.uri }}
+                        containerStyle={{ borderRadius: 10 }}
+                    >
+                        <Text style={{ marginBottom: 10 }}>
+                            I Can Customize card further.
                 </Text>
-                    <Button
-                        backgroundColor="#03A9F4"
-                        title="View Now!"
-                    />
-                </Card>
-            </Animated.View>
+                        <Button
+                            backgroundColor="#03A9F4"
+                            title="View Now!"
+                        />
+                    </Card>
+                </Animated.View>
             );
-        }).reverse() ;
+        }).reverse();
     }
     render() {
         return (
