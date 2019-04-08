@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Animated, Text, PanResponder, Dimensions, LayoutAnimation, UIManager } from 'react-native';
+import { View, Animated, Text, PanResponder, Dimensions } from 'react-native';
 import { Button, Card } from 'react-native-elements';
 
 import { Actions } from 'react-native-router-flux';
@@ -11,8 +11,8 @@ const SWIPE_OUT_DURATION = 500;
 
 class Deck extends Component {
     static defaultProps = {
-        onSwipeLeft: () => { },
-        onSwipeRight: () => { }
+        onSwipeLeft: () => {},
+        onSwipeRight: () => {} 
     }
 
     constructor(props) {
@@ -37,6 +37,7 @@ class Deck extends Component {
             }
         });
 
+<<<<<<< HEAD
         this.state = { panResponder, position, index: 0 };
     }
 
@@ -49,22 +50,25 @@ class Deck extends Component {
     componentWillUpdate() {
         UIManager.setLayoutAnimationEnabledExperimental && UIManager.setLayoutAnimationEnabledExperimental(true);
         LayoutAnimation.spring();
+=======
+        this.state = { panResponder, position , index: 0 };
+>>>>>>> parent of 4fcaeed... Card advancing
     }
 
     forceSwipe(direction) {
-        const x = direction === 'Right' ? SCREEN_WIDTH * 2 : -SCREEN_WIDTH * 2;
+        const x = direction === 'Right' ? SCREEN_WIDTH*2 : -SCREEN_WIDTH*2; 
         Animated.timing(this.state.position, {
-            toValue: { x, y: 0 },
+            toValue: { x , y: 0 },
             duration: SWIPE_OUT_DURATION
-        }).start(() => this.onSwipeComplete(direction));
+        }).start( () => this.onSwipeComplete(direction) );
     }
 
     onSwipeComplete(direction) {
-        const { onSwipeLeft, onSwipeRight, data } = this.props;
+        const { onSwipeLeft , onSwipeRight, data } = this.props;
         const item = data[this.state.index];
 
         direction === 'Right' ? onSwipeRight(item) : onSwipeLeft(item);
-        this.state.position.setValue({ x: 0, y: 0 });
+        this.state.position.setValue({ x:0 , y:0 });
         this.setState({ index: this.state.index + 1 });
     }
 
@@ -89,7 +93,7 @@ class Deck extends Component {
 
     renderCards() {
 
-        if (this.state.index >= this.props.data.length) {
+        if(this.state.index >= this.props.data.length) {
             return (
                 <Card
                     title="No jobs for you"
@@ -110,16 +114,26 @@ class Deck extends Component {
 
         return this.props.data.map((item, i) => {
 
-            if (i < this.state.index) { return null; }
+            if(i < this.state.index) { return null; }
 
-            if (i === this.state.index) {
+            if (i === this.state.index ) {
                 return (
+<<<<<<< HEAD
                     <View key={item.id} style={styles.cardStyle}>
                         <Animated.View
+=======
+                    <Animated.View
+                        key={item.id}
+                        style={this.getCardStyle()}
+                        {...this.state.panResponder.panHandlers}
+                    >
+                        <Card
+>>>>>>> parent of 4fcaeed... Card advancing
                             key={item.id}
                             style={this.getCardStyle()} //unable to apply multiple style
                             {...this.state.panResponder.panHandlers}
                         >
+<<<<<<< HEAD
                             <Card
                                 key={item.id}
                                 title={item.text}
@@ -140,9 +154,25 @@ class Deck extends Component {
             }
             return (
                 <Animated.View
+=======
+                            <Text style={{ marginBottom: 10 }}>
+                                I Can Customize card further.
+                    </Text>
+                            <Button
+                                backgroundColor="#03A9F4"
+                                title="View Now!"
+                            />
+                        </Card>
+                    </Animated.View>
+                );
+            }
+            return (
+                <Card
+>>>>>>> parent of 4fcaeed... Card advancing
                     key={item.id}
                     style={[ styles.cardStyle , { top: 300 + (12 * (i - this.state.index)) }]}
                 >
+<<<<<<< HEAD
                     <Card
                         key={item.id}
                         title={item.text}
@@ -160,6 +190,18 @@ class Deck extends Component {
                 </Animated.View>
             );
         }).reverse();
+=======
+                    <Text style={{ marginBottom: 10 }}>
+                        I Can Customize card further.
+                    </Text>
+                    <Button
+                        backgroundColor="#03A9F4"
+                        title="View Now!"
+                    />
+                </Card>
+            );
+        });
+>>>>>>> parent of 4fcaeed... Card advancing
     }
     render() {
         return (
@@ -167,13 +209,6 @@ class Deck extends Component {
                 {this.renderCards()}
             </View>
         );
-    }
-}
-
-const styles = {
-    cardStyle: {
-        position: 'absolute',
-        width: SCREEN_WIDTH,
     }
 }
 
